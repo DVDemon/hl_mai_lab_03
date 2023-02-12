@@ -119,7 +119,7 @@ public:
                     std::optional<database::Author> result = database::Author::read_from_cache_by_id(id);
                     if (result)
                     {
-                        std::cout << "from cache" << std::endl;
+                        //std::cout << "from cache" << std::endl;
                         response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
                         response.setChunkedTransferEncoding(true);
                         response.setContentType("application/json");
@@ -127,8 +127,8 @@ public:
                         Poco::JSON::Stringifier::stringify(result->toJSON(), ostr);
                         return;
                     }
-                    else
-                        std::cout << "cache miss" << std::endl;
+                    // else
+                    //     std::cout << "cache miss" << std::endl;
                 }
 
                 std::optional<database::Author> result = database::Author::read_by_id(id);
