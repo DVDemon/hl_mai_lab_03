@@ -23,7 +23,7 @@ add_executable(${EXAMPLE_BINARY} main.cpp
                                  config/config.cpp 
                                  database/cache.cpp
                                  database/database.cpp
-                                 database/author.cpp
+                                 database/user.cpp
                                  database/message.cpp)
 
 add_executable(load_data load_data.cpp)

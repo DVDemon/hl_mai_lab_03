@@ -7,5 +7,5 @@ request = function()
     headers = {}
     headers["Content-Type"] = "application/json"
     body = ''
-    return wrk.format("GET", "/author?no_cache&id=".. tostring(number), headers, body)
+    return wrk.format("GET", "/user?no_cache&id=".. tostring(number), headers, body)
 end

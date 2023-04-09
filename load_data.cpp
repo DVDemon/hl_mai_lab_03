@@ -36,17 +36,19 @@ auto main() -> int
     try
     {
         Poco::Data::Statement create_stmt(session);
-        create_stmt << "CREATE TABLE IF NOT EXISTS `Author` (`id` INT NOT NULL AUTO_INCREMENT,"
-                    << "`first_name` VARCHAR(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,"
-                    << "`last_name` VARCHAR(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,"
-                    << "`email` VARCHAR(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,"
-                    << "`title` VARCHAR(1024) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,"
-                    << "PRIMARY KEY (`id`),KEY `fn` (`first_name`),KEY `ln` (`last_name`));";
+        create_stmt << "CREATE TABLE IF NOT EXISTS `User` (`id` INT NOT NULL AUTO_INCREMENT,"
+                        << "`first_name` VARCHAR(256) NULL,"
+                        << "`last_name` VARCHAR(256) NULL,"
+                        << "`login` VARCHAR(256) NULL,"
+                        << "`password` VARCHAR(256) NULL,"
+                        << "`email` VARCHAR(256) NULL,"
+                        << "`title` VARCHAR(1024) NULL,"
+                        << "PRIMARY KEY (`id`),KEY `fn` (`first_name`),KEY `ln` (`last_name`));";
         create_stmt.execute();
         std::cout << "table created" << std::endl;
 
         Poco::Data::Statement truncate_stmt(session);
-        truncate_stmt << "TRUNCATE TABLE `Author`;";
+        truncate_stmt << "TRUNCATE TABLE `User`;";
         truncate_stmt.execute();
 
         // https://www.onlinedatagenerator.com/
@@ -71,7 +73,7 @@ auto main() -> int
             std::string title = object->getValue<std::string>("title");
             std::string email = object->getValue<std::string>("email");
             Poco::Data::Statement insert(session);
-            insert << "INSERT INTO Author (first_name,last_name,email,title) VALUES(?, ?, ?, ?)",
+            insert << "INSERT INTO User (first_name,last_name,email,title) VALUES(?, ?, ?, ?)",
                 Poco::Data::Keywords::use(first_name),
                 Poco::Data::Keywords::use(last_name),
                 Poco::Data::Keywords::use(email),

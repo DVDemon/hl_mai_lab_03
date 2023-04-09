@@ -38,17 +38,30 @@ using Poco::Util::OptionCallback;
 using Poco::Util::OptionSet;
 using Poco::Util::ServerApplication;
 
-#include "handlers/author_handler.h"
+#include "../helper.h"
+
+#include "handlers/user_handler.h"
 #include "handlers/message_handler.h"
 #include "handlers/web_page_handler.h"
 
-static bool startsWith(const std::string &str, const std::string &prefix)
-{
-    return str.size() >= prefix.size() && 0 == str.compare(0, prefix.size(), prefix);
-}
-
 class HTTPRequestFactory : public HTTPRequestHandlerFactory
 {
+private:
+    bool hasSubstr(const std::string &str, const std::string &substr)
+    {
+        if (str.size() < substr.size())
+            return false;
+        for (size_t i = 0; i <= str.size() - substr.size(); ++i)
+        {
+            bool ok{true};
+            for (size_t j = 0; ok && (j < substr.size()); ++j)
+                ok = (str[i + j] == substr[j]);
+            if (ok)
+                return true;
+        }
+        return false;
+    }
+
 public:
     HTTPRequestFactory(const std::string &format) : _format(format)
     {
@@ -57,14 +70,14 @@ public:
     HTTPRequestHandler *createRequestHandler(
         const HTTPServerRequest &request)
     {
-        static const std::string author = "/author";
+        static const std::string user = "/user";
         static const std::string message = "/message";
         static const std::string contacts = "/contacts";
-        if (startsWith(request.getURI(), author))
-            return new AuthorHandler(_format);
-        if (startsWith(request.getURI(), message))
+        if (hasSubstr(request.getURI(), user))
+            return new UserHandler(_format);
+        if (hasSubstr(request.getURI(), message))
             return new MessageHandler(_format);
-        if (startsWith(request.getURI(), contacts))
+        if (hasSubstr(request.getURI(), contacts))
             return new MessageHandler(_format);
         return new WebPageHandler(_format);
         return 0;
