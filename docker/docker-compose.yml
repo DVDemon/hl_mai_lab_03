@@ -18,6 +18,11 @@ services:
       --log-queries-not-using-indexes=ON
     networks:
       - arch-network
+    healthcheck:
+      test: "/usr/bin/mariadb --user=stud --password=stud --execute \"SHOW DATABASES;\""
+      interval: 15s
+      timeout: 1s
+      retries: 5
     ports:
       - 3360:3306
     volumes:
@@ -42,6 +47,11 @@ services:
       - arch-network
     ports:
       - 3361:3306
+    healthcheck:
+      test: "/usr/bin/mariadb --user=stud --password=stud --execute \"SHOW DATABASES;\""
+      interval: 15s
+      timeout: 1s
+      retries: 5
     volumes:
       - db-node-2-data:/var/lib/mysql
 
@@ -62,6 +72,11 @@ services:
       --log-queries-not-using-indexes=ON
     networks:
       - arch-network
+    healthcheck:
+      test: "/usr/bin/mariadb --user=stud --password=stud --execute \"SHOW DATABASES;\""
+      interval: 15s
+      timeout: 1s
+      retries: 5
     ports:
       - 3362:3306
     volumes:
