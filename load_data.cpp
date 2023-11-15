@@ -28,6 +28,7 @@ auto main() -> int
     _connection_string+=";password=";
     _connection_string+=std::getenv("DB_PASSWORD");
     std::cout << "connection string:" << _connection_string << std::endl;
+    
 
     Poco::Data::Session session(
         Poco::Data::SessionFactory::instance().create(
@@ -64,6 +65,7 @@ auto main() -> int
         Poco::Dynamic::Var result = parser.parse(json);
         Poco::JSON::Array::Ptr arr = result.extract<Poco::JSON::Array::Ptr>();
 
+        std::cout << "Begin inserting ...." << std::endl;
         size_t i{0};
         for (i = 0; i < arr->size(); ++i)
         {
@@ -85,7 +87,7 @@ auto main() -> int
                 Poco::Data::Keywords::use(password);
 
             insert.execute();
-            if(i%100==0) std::cout << ".";
+            //if(i%100==0) std::cout << "." << std::flush;
         }
 
         std::cout << "Inserted " << i << " records" << std::endl; 

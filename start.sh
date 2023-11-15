@@ -1,4 +1,4 @@
-export DB_HOST=127.0.0.1
+export DB_HOST=192.168.64.6
 export DB_PORT=6033
 export DB_LOGIN=stud
 export DB_PASSWORD=stud

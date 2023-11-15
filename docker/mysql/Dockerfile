@@ -1,4 +1,4 @@
-FROM mariadb
+FROM mariadb:10.10.4
 #mysql:5.7.30
 
 # Update and clean apt cache

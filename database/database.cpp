@@ -16,6 +16,7 @@ namespace database{
         _connection_string+=Config::get().get_password();
         std::cout << "connection string:" << _connection_string << std::endl;
         Poco::Data::MySQL::Connector::registerConnector();
+
     }
 
     size_t Database::get_max_shard(){
@@ -53,7 +54,9 @@ namespace database{
     }
 
     Poco::Data::Session Database::create_session(){
-        return Poco::Data::Session(Poco::Data::SessionFactory::instance().create(Poco::Data::MySQL::Connector::KEY, _connection_string));
+        return Poco::Data::Session(
+            Poco::Data::SessionFactory::instance().create(Poco::Data::MySQL::Connector::KEY, 
+            _connection_string));
     }
 
 }

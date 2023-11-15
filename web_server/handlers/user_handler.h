@@ -134,6 +134,7 @@ public:
                 bool no_cache = false;
                 if (form.has("no_cache")) no_cache = true;
 
+               // std::cout << "get by id:" << id << std::endl;
                 if (!no_cache)
                 {
                     std::optional<database::User> result = database::User::read_from_cache_by_id(id);
@@ -152,8 +153,9 @@ public:
                 std::optional<database::User> result = database::User::read_by_id(id);
                 if (result)
                 {
+                    //std::cout << "found in base" << id << std::endl;
                     if(!no_cache) result->save_to_cache();
-
+                    //std::cout << "saved to cache" << id << std::endl;
                     response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
                     response.setChunkedTransferEncoding(true);
                     response.setContentType("application/json");
@@ -170,7 +172,7 @@ public:
                     root->set("type", "/errors/not_found");
                     root->set("title", "Internal exception");
                     root->set("status", "404");
-                    root->set("detail", "user ot found");
+                    root->set("detail", "user not found");
                     root->set("instance", "/user");
                     std::ostream &ostr = response.send();
                     Poco::JSON::Stringifier::stringify(root, ostr);
@@ -288,8 +290,9 @@ public:
                 }
             }
         }
-        catch (...)
+        catch (std::exception & ex)
         {
+            std::cout << "exception: " << ex.what() << std::endl;
         }
 
         response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_NOT_FOUND);
@@ -299,7 +302,7 @@ public:
         root->set("type", "/errors/not_found");
         root->set("title", "Internal exception");
         root->set("status", Poco::Net::HTTPResponse::HTTPStatus::HTTP_NOT_FOUND);
-        root->set("detail", "request ot found");
+        root->set("detail", "request not found");
         root->set("instance", "/user");
         std::ostream &ostr = response.send();
         Poco::JSON::Stringifier::stringify(root, ostr);

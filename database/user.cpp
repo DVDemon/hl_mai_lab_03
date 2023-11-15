@@ -156,7 +156,6 @@ std::optional<User> User::read_from_cache_by_id(long id)
                 into(a._password),
                 use(id),
                 range(0, 1); //  iterate over result set one row at a time
-
             select.execute();
             Poco::Data::RecordSet rs(select);
             if (rs.moveFirst()) return a;
